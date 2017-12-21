@@ -34,7 +34,11 @@ class RestaurantRegistryActor extends Actor with ActorLogging {
       restaurants += { uuid -> restaurant }
       sender() ! ActionPerformed(s"Restaurant ${uuid} created.")
     case UpdateRestaurant(uuid, restaurant) =>
-      restaurants(uuid) = restaurant
-      sender() ! ActionPerformed(s"Restaurant ${uuid} updated.")
+      if ((restaurants get uuid) != None) {
+        restaurants(uuid) = restaurant
+        sender() ! ActionPerformed(s"Restaurant ${uuid} updated.")
+      } else {
+        sender() ! ActionPerformed(s"Restaurant ${uuid} not found.")
+      }
   }
 }
