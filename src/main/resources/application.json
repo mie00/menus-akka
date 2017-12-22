@@ -3,7 +3,7 @@
 	"port": 8080,
 	"timeout": "5s",
 	"mongodb": {
-		"url": "localhost",
+		"url": "mongodb",
 		"dbname": "menus-db"
 	}
 }

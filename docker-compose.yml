@@ -1,0 +1,12 @@
+version: "3"
+services:
+        web:
+                build:
+                        context: .
+                links:
+                        - mongodb
+        mongodb:
+                image: "mongo"
+                volumes:
+                        - "/var/data/menus/db:/data/db"
+
