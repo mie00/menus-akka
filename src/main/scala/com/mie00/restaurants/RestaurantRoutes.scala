@@ -47,9 +47,9 @@ trait RestaurantRoutes extends JsonSupport {
             get {
               parameters("closed".as[Boolean].?) { (closed) =>
                 {
-                  val restaurants: Future[List[Restaurant]] =
-                    (restaurantRegistryActor ? GetRestaurants(closed)).mapTo[List[Restaurant]]
-                  complete(restaurants)
+                  val restaurantsFuture: Future[Future[List[Restaurant]]] =
+                    (restaurantRegistryActor ? GetRestaurants(closed)).mapTo[Future[List[Restaurant]]]
+                  complete(restaurantsFuture)
                 }
               }
             },

@@ -28,17 +28,15 @@ class RestaurantRegistryActor extends Actor with ActorLogging {
 
   def receive: Receive = {
     case GetRestaurants(closed) =>
-      sender() ! ((restaurants.map { case (k, v) => Restaurant(k, v) }(collection.breakOut): List[Restaurant]).filter { case x => closed == None || x.data.closed == closed.get })
+      sender() ! Database.findAllRestaurants(closed)
     case CreateRestaurant(restaurant) =>
       val uuid = UUID.random.string
-      restaurants += { uuid -> restaurant }
+      val r = Restaurant(uuid, restaurant)
+      Database.create(r)
       sender() ! ActionPerformed(s"Restaurant ${uuid} created.")
     case UpdateRestaurant(uuid, restaurant) =>
-      if ((restaurants get uuid) != None) {
-        restaurants(uuid) = restaurant
-        sender() ! ActionPerformed(s"Restaurant ${uuid} updated.")
-      } else {
-        sender() ! ActionPerformed(s"Restaurant ${uuid} not found.")
-      }
+      val r = Restaurant(uuid, restaurant)
+      Database.update(r)
+      sender() ! ActionPerformed(s"Restaurant ${uuid} updated.")
   }
 }
