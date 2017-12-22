@@ -22,6 +22,14 @@ To store the data in the `assets/sample-restaurant-data.json` file in the databa
 sbt "runMain com.mie00.restaurants.QuickstartServer"
 ```
 
+## Testing
+
+Please make sure that you change the collection to an empty collection, you can do this in the configuration file.
+
+```bash
+sbt test
+```
+
 ## License
 
 [Apache License 2.0](./LICENSE) © 2017 Mohamed Elawadi
