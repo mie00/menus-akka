@@ -32,7 +32,8 @@ trait RestaurantRoutes extends JsonSupport {
   def restaurantRegistryActor: ActorRef
 
   // Required by the `ask` (?) method below
-  implicit lazy val timeout = Timeout(5.seconds) // usually we'd obtain the timeout from the system's configuration
+  val t = Config.conf.getDuration("timeout").toNanos
+  implicit lazy val timeout = Timeout(scala.concurrent.duration.Duration.fromNanos(t): scala.concurrent.duration.FiniteDuration)
 
   //#all-routes
   //#restaurants-get-post

@@ -30,9 +30,11 @@ object QuickstartServer extends App with RestaurantRoutes {
   //#main-class
 
   //#http-server
-  val serverBindingFuture: Future[ServerBinding] = Http().bindAndHandle(routes, "localhost", 8080)
+  val host = Config.conf.getString("host")
+  val port = Config.conf.getInt("port")
+  val serverBindingFuture: Future[ServerBinding] = Http().bindAndHandle(routes, host, port)
 
-  println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
+  println(s"Server online at http://${host}:${port}/\nPress RETURN to stop...")
 
   StdIn.readLine()
 
@@ -46,3 +48,4 @@ object QuickstartServer extends App with RestaurantRoutes {
   //#main-class
 }
 //#main-class
+//
