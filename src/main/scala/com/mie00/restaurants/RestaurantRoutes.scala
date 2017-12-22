@@ -6,6 +6,7 @@ import akka.event.Logging
 import scala.concurrent.duration._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.model.ContentTypes
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.directives.MethodDirectives.delete
 import akka.http.scaladsl.server.directives.MethodDirectives.get
@@ -18,6 +19,9 @@ import com.mie00.restaurants.RestaurantRegistryActor._
 import akka.pattern.ask
 import akka.util.Timeout
 import spray.json.DefaultJsonProtocol._
+import scala.util.{ Failure, Success }
+
+import reactivemongo.api.commands.WriteResult
 
 //#restaurant-routes-class
 trait RestaurantRoutes extends JsonSupport {
@@ -55,11 +59,11 @@ trait RestaurantRoutes extends JsonSupport {
             },
             post {
               entity(as[RestaurantData]) { restaurant =>
-                val restaurantCreated: Future[ActionPerformed] =
-                  (restaurantRegistryActor ? CreateRestaurant(restaurant)).mapTo[ActionPerformed]
-                onSuccess(restaurantCreated) { performed =>
-                  log.info("Created restaurant {}", performed.description)
-                  complete((StatusCodes.Created, performed))
+                val restaurantCreated: Future[Future[WriteResult]] =
+                  (restaurantRegistryActor ? CreateRestaurant(restaurant)).mapTo[Future[WriteResult]]
+                onSuccess(restaurantCreated) { result =>
+                  log.info("Created restaurant {}", result.toString)
+                  complete((StatusCodes.Created))
                 }
               }
             }
@@ -71,11 +75,14 @@ trait RestaurantRoutes extends JsonSupport {
           concat(
             put {
               entity(as[RestaurantData]) { restaurant =>
-                val restaurantUpdated: Future[ActionPerformed] =
-                  (restaurantRegistryActor ? UpdateRestaurant(uuid, restaurant)).mapTo[ActionPerformed]
-                onSuccess(restaurantUpdated) { performed =>
-                  log.info("Updated restaurant [{}]: {}", uuid, performed.description)
-                  complete((StatusCodes.OK, performed))
+                val restaurantUpdated: Future[Future[WriteResult]] =
+                  (restaurantRegistryActor ? UpdateRestaurant(uuid, restaurant)).mapTo[Future[WriteResult]]
+                onComplete(restaurantUpdated) {
+                  case Success(result) => {
+                    log.info("Updated restaurant [{}]: {}", result.toString)
+                    complete((StatusCodes.OK))
+                  }
+                  case Failure(ex) => complete((StatusCodes.NotFound, s"An error occurred: ${ex.getMessage}"))
                 }
               }
             }

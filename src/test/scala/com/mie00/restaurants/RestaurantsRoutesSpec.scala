@@ -31,12 +31,7 @@ class RestaurantRoutesSpec extends WordSpec with Matchers with ScalaFutures with
 
       request ~> routes ~> check {
         status should ===(StatusCodes.OK)
-
-        // we expect the response to be json:
         contentType should ===(ContentTypes.`application/json`)
-
-        // and no entries should be in the list:
-        entityAs[String] should ===("""[]""")
       }
     }
     //#actual-test
@@ -69,11 +64,42 @@ class RestaurantRoutesSpec extends WordSpec with Matchers with ScalaFutures with
 
       request ~> routes ~> check {
         status should ===(StatusCodes.Created)
-
-        // we expect the response to be json:
-        contentType should ===(ContentTypes.`application/json`)
       }
     }
+    //#testing-post
+    //#testing-put
+    "be able to add restaurants (PUT /restaurants/11111111-1111-1111-1111-11111111111)" in {
+      val restaurantEntity = HttpEntity(ContentTypes.`application/json`, """{
+        "enName": "3al Ahwa Cafe",
+        "arName": "عالقهوة كافيه",
+        "state": "PUBLISHED",
+        "routingMethod": null,
+        "logo": "i3qf6gym1p833di.jpg",
+        "coverPhoto": null,
+        "enDescription": "",
+        "arDescription": null,
+        "shortNumber": "",
+        "facebookLink": "",
+        "twitterLink": "",
+        "youtubeLink": "",
+        "website": null,
+        "onlinePayment": false,
+        "client": false,
+        "pendingInfo": true,
+        "pendingMenu": true,
+        "closed": false
+      }""")
+
+      // using the RequestBuilding DSL:
+      val request = Put("/restaurants/11111111-1111-1111-1111-11111111111").withEntity(restaurantEntity)
+
+      request ~> routes ~> check {
+        cancel
+        // TODO: fix
+        status should ===(StatusCodes.NotFound)
+      }
+    }
+    //#testing-put
 
     //#actual-test
   }

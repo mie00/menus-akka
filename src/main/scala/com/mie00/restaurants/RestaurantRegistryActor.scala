@@ -32,11 +32,9 @@ class RestaurantRegistryActor extends Actor with ActorLogging {
     case CreateRestaurant(restaurant) =>
       val uuid = UUID.random.string
       val r = Restaurant(uuid, restaurant)
-      Database.create(r)
-      sender() ! ActionPerformed(s"Restaurant ${uuid} created.")
+      sender() ! Database.create(r)
     case UpdateRestaurant(uuid, restaurant) =>
       val r = Restaurant(uuid, restaurant)
-      Database.update(r)
-      sender() ! ActionPerformed(s"Restaurant ${uuid} updated.")
+      sender() ! Database.update(r)
   }
 }

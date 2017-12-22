@@ -85,7 +85,8 @@ object Database {
       .insert(r)
   }
   def update(r: Restaurant): Future[WriteResult] = {
-    val selector = BSONDocument("uuid" -> r.uuid)
+    val selector = BSONDocument("_id" -> r.uuid)
+    // TODO: fail if no object is found
     Database.collection
       .update(selector, r)
   }
