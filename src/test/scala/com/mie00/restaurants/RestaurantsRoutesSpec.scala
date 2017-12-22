@@ -1,4 +1,4 @@
-package com.lightbend.akka.http.sample
+package com.mie00.restaurants
 
 //#test-top
 import akka.actor.ActorRef

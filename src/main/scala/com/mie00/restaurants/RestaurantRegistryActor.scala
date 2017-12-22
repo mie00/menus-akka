@@ -1,4 +1,4 @@
-package com.lightbend.akka.http.sample
+package com.mie00.restaurants
 
 import akka.actor.{ Actor, ActorLogging, Props }
 import io.jvm.uuid._

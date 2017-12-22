@@ -1,4 +1,4 @@
-package com.lightbend.akka.http.sample
+package com.mie00.restaurants
 
 import akka.actor.{ ActorRef, ActorSystem }
 import akka.event.Logging
@@ -14,7 +14,7 @@ import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.http.scaladsl.server.directives.PathDirectives.path
 
 import scala.concurrent.Future
-import com.lightbend.akka.http.sample.RestaurantRegistryActor._
+import com.mie00.restaurants.RestaurantRegistryActor._
 import akka.pattern.ask
 import akka.util.Timeout
 import spray.json.DefaultJsonProtocol._

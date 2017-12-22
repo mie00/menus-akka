@@ -1,4 +1,4 @@
-package com.lightbend.akka.http.sample
+package com.mie00.restaurants
 
 import com.typesafe.config.ConfigFactory
 
