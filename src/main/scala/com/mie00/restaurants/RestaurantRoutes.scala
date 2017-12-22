@@ -43,53 +43,55 @@ trait RestaurantRoutes extends JsonSupport {
   //#restaurants-get-post
   //#restaurants-get-delete   
   lazy val restaurantRoutes: Route =
-    pathPrefix("restaurants") {
-      concat(
-        //#restaurants-get-delete
-        pathEnd {
-          concat(
-            get {
-              parameters("closed".as[Boolean].?) { (closed) =>
-                {
-                  val restaurantsFuture: Future[Future[List[Restaurant]]] =
-                    (restaurantRegistryActor ? GetRestaurants(closed)).mapTo[Future[List[Restaurant]]]
-                  complete(restaurantsFuture)
-                }
-              }
-            },
-            post {
-              entity(as[RestaurantData]) { restaurant =>
-                val restaurantCreated: Future[Future[WriteResult]] =
-                  (restaurantRegistryActor ? CreateRestaurant(restaurant)).mapTo[Future[WriteResult]]
-                onSuccess(restaurantCreated) { result =>
-                  log.info("Created restaurant {}", result.toString)
-                  complete((StatusCodes.Created))
-                }
-              }
-            }
-          )
-        },
-        //#restaurants-get-post
-        //#restaurants-get-delete
-        path(Segment) { uuid =>
-          concat(
-            put {
-              entity(as[RestaurantData]) { restaurant =>
-                val restaurantUpdated: Future[Future[WriteResult]] =
-                  (restaurantRegistryActor ? UpdateRestaurant(uuid, restaurant)).mapTo[Future[WriteResult]]
-                onComplete(restaurantUpdated) {
-                  case Success(result) => {
-                    log.info("Updated restaurant [{}]: {}", result.toString)
-                    complete((StatusCodes.OK))
+    pathPrefix("api") {
+      pathPrefix("restaurants") {
+        concat(
+          //#restaurants-get-delete
+          pathEnd {
+            concat(
+              get {
+                parameters("closed".as[Boolean].?) { (closed) =>
+                  {
+                    val restaurantsFuture: Future[Future[List[Restaurant]]] =
+                      (restaurantRegistryActor ? GetRestaurants(closed)).mapTo[Future[List[Restaurant]]]
+                    complete(restaurantsFuture)
                   }
-                  case Failure(ex) => complete((StatusCodes.NotFound, s"An error occurred: ${ex.getMessage}"))
+                }
+              },
+              post {
+                entity(as[RestaurantData]) { restaurant =>
+                  val restaurantCreated: Future[Future[WriteResult]] =
+                    (restaurantRegistryActor ? CreateRestaurant(restaurant)).mapTo[Future[WriteResult]]
+                  onSuccess(restaurantCreated) { result =>
+                    log.info("Created restaurant {}", result.toString)
+                    complete((StatusCodes.Created))
+                  }
                 }
               }
-            }
-          )
-        }
-      )
-      //#restaurants-get-delete
+            )
+          },
+          //#restaurants-get-post
+          //#restaurants-get-delete
+          path(Segment) { uuid =>
+            concat(
+              put {
+                entity(as[RestaurantData]) { restaurant =>
+                  val restaurantUpdated: Future[Future[WriteResult]] =
+                    (restaurantRegistryActor ? UpdateRestaurant(uuid, restaurant)).mapTo[Future[WriteResult]]
+                  onComplete(restaurantUpdated) {
+                    case Success(result) => {
+                      log.info("Updated restaurant [{}]: {}", result.toString)
+                      complete((StatusCodes.OK))
+                    }
+                    case Failure(ex) => complete((StatusCodes.NotFound, s"An error occurred: ${ex.getMessage}"))
+                  }
+                }
+              }
+            )
+          }
+        )
+        //#restaurants-get-delete
+      }
     }
   //#all-routes
 }

@@ -25,9 +25,9 @@ class RestaurantRoutesSpec extends WordSpec with Matchers with ScalaFutures with
 
   //#actual-test
   "RestaurantRoutes" should {
-    "return no restaurants if no present (GET /restaurants)" in {
+    "return no restaurants if no present (GET /api/restaurants)" in {
       // note that there's no need for the host part in the uri:
-      val request = HttpRequest(uri = "/restaurants")
+      val request = HttpRequest(uri = "/api/restaurants")
 
       request ~> routes ~> check {
         status should ===(StatusCodes.OK)
@@ -37,7 +37,7 @@ class RestaurantRoutesSpec extends WordSpec with Matchers with ScalaFutures with
     //#actual-test
 
     //#testing-post
-    "be able to add restaurants (POST /restaurants)" in {
+    "be able to add restaurants (POST /api/restaurants)" in {
       val restaurantEntity = HttpEntity(ContentTypes.`application/json`, """{
         "enName": "3al Ahwa Cafe",
         "arName": "عالقهوة كافيه",
@@ -60,7 +60,7 @@ class RestaurantRoutesSpec extends WordSpec with Matchers with ScalaFutures with
       }""")
 
       // using the RequestBuilding DSL:
-      val request = Post("/restaurants").withEntity(restaurantEntity)
+      val request = Post("/api/restaurants").withEntity(restaurantEntity)
 
       request ~> routes ~> check {
         status should ===(StatusCodes.Created)
@@ -68,7 +68,7 @@ class RestaurantRoutesSpec extends WordSpec with Matchers with ScalaFutures with
     }
     //#testing-post
     //#testing-put
-    "be able to add restaurants (PUT /restaurants/11111111-1111-1111-1111-11111111111)" in {
+    "be able to add restaurants (PUT /api/restaurants/11111111-1111-1111-1111-11111111111)" in {
       val restaurantEntity = HttpEntity(ContentTypes.`application/json`, """{
         "enName": "3al Ahwa Cafe",
         "arName": "عالقهوة كافيه",
@@ -91,7 +91,7 @@ class RestaurantRoutesSpec extends WordSpec with Matchers with ScalaFutures with
       }""")
 
       // using the RequestBuilding DSL:
-      val request = Put("/restaurants/11111111-1111-1111-1111-11111111111").withEntity(restaurantEntity)
+      val request = Put("/api/restaurants/11111111-1111-1111-1111-11111111111").withEntity(restaurantEntity)
 
       request ~> routes ~> check {
         cancel
