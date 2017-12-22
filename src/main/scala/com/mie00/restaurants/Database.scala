@@ -1,9 +1,9 @@
 package com.mie00.restaurants
 
 import reactivemongo.api._
-import reactivemongo.bson.{ BSONDocument, BSONDocumentWriter, BSONDocumentReader, Macros }
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.api.commands.WriteResult
+import reactivemongo.bson.{ BSONDocument, BSONDocumentWriter, BSONDocumentReader, Macros }
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

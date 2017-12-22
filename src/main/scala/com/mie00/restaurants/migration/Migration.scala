@@ -3,13 +3,13 @@ package com.mie00.restaurants.migration
 import spray.json._
 import spray.json.DefaultJsonProtocol._
 
-import scala.concurrent.Future
 import scala.concurrent._
+import scala.concurrent.Future
 import scala.util.{ Success, Failure }
 
 import com.mie00.restaurants.Database
-import com.mie00.restaurants.Restaurant
 import com.mie00.restaurants.JsonSupport
+import com.mie00.restaurants.Restaurant
 
 import ExecutionContext.Implicits.global
 

@@ -3,23 +3,23 @@ package com.mie00.restaurants
 import akka.actor.{ ActorRef, ActorSystem }
 import akka.event.Logging
 
-import scala.concurrent.duration._
-import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.model.ContentTypes
-import akka.http.scaladsl.server.Route
+import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.MethodDirectives.delete
 import akka.http.scaladsl.server.directives.MethodDirectives.get
 import akka.http.scaladsl.server.directives.MethodDirectives.post
-import akka.http.scaladsl.server.directives.RouteDirectives.complete
 import akka.http.scaladsl.server.directives.PathDirectives.path
+import akka.http.scaladsl.server.directives.RouteDirectives.complete
+import akka.http.scaladsl.server.Route
+import scala.concurrent.duration._
 
-import scala.concurrent.Future
-import com.mie00.restaurants.RestaurantRegistryActor._
 import akka.pattern.ask
 import akka.util.Timeout
-import spray.json.DefaultJsonProtocol._
+import com.mie00.restaurants.RestaurantRegistryActor._
+import scala.concurrent.Future
 import scala.util.{ Failure, Success }
+import spray.json.DefaultJsonProtocol._
 
 import reactivemongo.api.commands.WriteResult
 
