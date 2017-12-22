@@ -5,5 +5,10 @@
 	"mongodb": {
 		"url": "mongodb",
 		"dbname": "menus-db"
+	},
+	"mongo-async-driver": {
+		"akka": {
+			"loglevel": "ERROR"
+		}
 	}
 }
