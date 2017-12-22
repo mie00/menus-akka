@@ -3,6 +3,7 @@ package com.mie00.restaurants
 import reactivemongo.api._
 import reactivemongo.bson.{ BSONDocument, BSONDocumentWriter, BSONDocumentReader, Macros }
 import reactivemongo.api.collections.bson.BSONCollection
+import reactivemongo.api.commands.WriteResult
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -79,11 +80,11 @@ object Database {
       .cursor[Restaurant]
       .collect[List]()
   }
-  def create(r: Restaurant) {
+  def create(r: Restaurant): Future[WriteResult] = {
     Database.collection
       .insert(r)
   }
-  def update(r: Restaurant) {
+  def update(r: Restaurant): Future[WriteResult] = {
     val selector = BSONDocument("uuid" -> r.uuid)
     Database.collection
       .update(selector, r)

@@ -6,4 +6,4 @@ RUN sbt update
 
 ADD . /root/
 
-CMD sbt run
+CMD sbt "runMain com.mie00.restaurants.QuickstartServer"

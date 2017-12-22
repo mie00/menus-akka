@@ -16,8 +16,10 @@ cd menus-akka
 
 update the configuration file [src/main/resources/application.json](./src/main/resources/application.json).
 
+To store the data in the `assets/sample-restaurant-data.json` file in the database you can run `sbt "runMain com.mie00.restaurants.migration.Migration"`
+
 ```bash
-sbt run
+sbt "runMain com.mie00.restaurants.QuickstartServer"
 ```
 
 ## License
