@@ -60,13 +60,13 @@ object Database {
 
   implicit object RestaurantWtiter extends BSONDocumentWriter[Restaurant] {
     def write(r: Restaurant): BSONDocument =
-      BSONDocument("uuid" -> r.uuid, "data" -> r.data)
+      BSONDocument("_id" -> r.uuid, "data" -> r.data)
   }
 
   implicit object RestaurantReader extends BSONDocumentReader[Restaurant] {
     def read(doc: BSONDocument): Restaurant = {
       (for {
-        uuid <- doc.getAsTry[String]("uuid")
+        uuid <- doc.getAsTry[String]("_id")
         data <- doc.getAsTry[RestaurantData]("data")
       } yield Restaurant(uuid, data)).get
     }
